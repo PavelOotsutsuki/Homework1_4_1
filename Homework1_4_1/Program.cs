@@ -18,14 +18,14 @@ namespace Homework1_4_1
             while (isWork)
             {
                 Console.Clear();
-                CreateMenu(ref fullname, ref post, ref isWork);
+                PrintMenu(ref fullname, ref post, ref isWork);
             }
 
             Console.Write("Для продолжения нажмите любую кнопку...");
             Console.ReadKey();
         }
 
-        static void CreateMenu(ref string[] fullname, ref string[] post, ref bool isWork)
+        static void PrintMenu(ref string[] fullname, ref string[] post, ref bool isWork)
         {
             const int CommandAddFile = 1;
             const int CommandAllFiles = 2;
@@ -47,13 +47,13 @@ namespace Homework1_4_1
                     AddFile(ref fullname, ref post);
                     break;
                 case CommandAllFiles:
-                    GetAllFiles(ref fullname, ref post);
+                    GetAllFiles(fullname, post);
                     break;
                 case CommandDeleteFiles:
                     DeleteFile(ref fullname, ref post);
                     break;
                 case CommandSearchToSecondName:
-                    SearchToSecondName(ref fullname, ref post);
+                    SearchToSecondName(fullname, post);
                     break;
                 case CommandExit:
                     isWork = false;
@@ -73,49 +73,25 @@ namespace Homework1_4_1
             string newFullname = Console.ReadLine();
             newFullname = newFullname.Trim();
 
-            if (GetCountSymbolsInString(newFullname, ' ') != 2)
+            if (newFullname.Split().Length!= 3)
             {
-                Console.WriteLine("Неверно введена фамилия. Она должна быть введена в формате ФАМИЛИЯ ИМЯ ОТЧЕСТВО");
+                Console.WriteLine("Неверно введено ФИО. Оно должно быть введено в формате ФАМИЛИЯ ИМЯ ОТЧЕСТВО");
             }
             else
             {
-                string[] fullnameCopy = new string[fullname.Length + 1];
-                string[] postCopy = new string[post.Length + 1];
-
-                CopyArray(ref fullname, ref fullnameCopy);
-                CopyArray(ref post, ref postCopy);
-
                 Console.Write("Введите должность: ");
                 string newPost = Console.ReadLine();
                 newPost = newPost.Trim();
-                fullnameCopy[fullnameCopy.Length - 1] = newFullname;
-                postCopy[postCopy.Length - 1] = newPost;
 
-                fullname = fullnameCopy;
-                post = postCopy;
+                ChangeSizeArray(ref fullname, fullname.Length + 1);
+                ChangeSizeArray(ref post, post.Length + 1);
+
+                fullname[fullname.Length - 1] = newFullname;
+                post[post.Length - 1] = newPost;
             }
         }
 
-        static void CopyArray(ref string[] copyArray, ref string[] pasteArray)
-        {
-            int maxLength;
-
-            if (pasteArray.Length >= copyArray.Length)
-            {
-                maxLength = copyArray.Length;
-            }
-            else
-            {
-                maxLength = pasteArray.Length;
-            }
-
-            for (int arrayIndex = 0; arrayIndex < maxLength; arrayIndex++)
-            {
-                pasteArray[arrayIndex] = copyArray[arrayIndex];
-            }
-        }
-
-        static void GetAllFiles(ref string[] fullname, ref string[] post)
+        static void GetAllFiles(string[] fullname, string[] post)
         {
             Console.Clear();
 
@@ -157,14 +133,8 @@ namespace Homework1_4_1
                             post[arrayIndex] = post[arrayIndex + 1];
                         }
 
-                        string[] fullnameCopy = new string[fullname.Length - 1];
-                        string[] postCopy = new string[post.Length - 1];
-
-                        CopyArray(ref fullname, ref fullnameCopy);
-                        CopyArray(ref post, ref postCopy);
-
-                        fullname = fullnameCopy;
-                        post = postCopy;
+                        ChangeSizeArray(ref fullname, fullname.Length - 1);
+                        ChangeSizeArray(ref post, post.Length - 1);
                         Console.WriteLine("Досье успешно удалено.");
                     }
                 }
@@ -175,7 +145,7 @@ namespace Homework1_4_1
             }
         }
 
-        static void SearchToSecondName(ref string[] fullname, ref string[] post)
+        static void SearchToSecondName(string[] fullname, string[] post)
         {
             Console.Clear();
             Console.Write("Введите фамилию: ");
@@ -185,11 +155,7 @@ namespace Homework1_4_1
 
             for (int arrayIndex = 0; arrayIndex < fullname.Length; arrayIndex++)
             {
-                char space = ' ';
-                int firstSpaceIndex = fullname[arrayIndex].IndexOf(space);
-                string secondNameArray = fullname[arrayIndex].Remove(firstSpaceIndex);
-
-                if (secondNameArray == secondName)
+                if (fullname[arrayIndex].Split()[0] == secondName)
                 {
                     Console.WriteLine($"{arrayIndex + 1}. {fullname[arrayIndex]} - {post[arrayIndex]}");
                     haveInformation = true;
@@ -202,19 +168,26 @@ namespace Homework1_4_1
             }
         }
 
-        static int GetCountSymbolsInString(string stringForSearch, char searchSymbol)
+        static void ChangeSizeArray(ref string [] array, int newSize)
         {
-            int count = 0;
+            string[] arrayCopy = new string[newSize];
+            int minLength;
 
-            foreach (char stringSympol in stringForSearch)
+            if (array.Length >= newSize)
             {
-                if (stringSympol == searchSymbol)
-                {
-                    count++;
-                }
+                minLength = newSize;
+            }
+            else
+            {
+                minLength = array.Length;
             }
 
-            return count;
+            for (int arrayIndex = 0; arrayIndex < minLength; arrayIndex++)
+            {
+                arrayCopy[arrayIndex] = array[arrayIndex];
+            }
+
+            array = arrayCopy;
         }
     }
 }
