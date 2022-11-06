@@ -11,21 +11,21 @@ namespace Homework1_4_1
         static void Main(string[] args)
         {
 
-            string[] fullname = new string[0];
-            string[] post = new string[0];
+            string[] fullnames = new string[0];
+            string[] posts = new string[0];
             bool isWork = true;
 
             while (isWork)
             {
                 Console.Clear();
-                PrintMenu(ref fullname, ref post, ref isWork);
+                PrintMenu(ref fullnames, ref posts, ref isWork);
             }
 
             Console.Write("Для продолжения нажмите любую кнопку...");
             Console.ReadKey();
         }
 
-        static void PrintMenu(ref string[] fullname, ref string[] post, ref bool isWork)
+        static void PrintMenu(ref string[] fullnames, ref string[] posts, ref bool isWork)
         {
             const int CommandAddFile = 1;
             const int CommandAllFiles = 2;
@@ -44,16 +44,16 @@ namespace Homework1_4_1
             switch (command)
             {
                 case CommandAddFile:
-                    AddFile(ref fullname, ref post);
+                    AddFile(ref fullnames, ref posts);
                     break;
                 case CommandAllFiles:
-                    GetAllFiles(fullname, post);
+                    PrintAllFiles(fullnames, posts);
                     break;
                 case CommandDeleteFiles:
-                    DeleteFile(ref fullname, ref post);
+                    DeleteFile(ref fullnames, ref posts);
                     break;
                 case CommandSearchToSecondName:
-                    SearchToSecondName(fullname, post);
+                    SearchToSecondName(fullnames, posts);
                     break;
                 case CommandExit:
                     isWork = false;
@@ -66,7 +66,7 @@ namespace Homework1_4_1
             Console.ReadKey();
         }
 
-        static void AddFile(ref string[] fullname, ref string[] post)
+        static void AddFile(ref string[] fullnames, ref string[] posts)
         {
             Console.Clear();
             Console.Write("Введите ФИО: ");
@@ -83,23 +83,23 @@ namespace Homework1_4_1
                 string newPost = Console.ReadLine();
                 newPost = newPost.Trim();
 
-                ChangeSizeArray(ref fullname, fullname.Length + 1);
-                ChangeSizeArray(ref post, post.Length + 1);
+                ChangeSizeArray(ref fullnames, fullnames.Length + 1);
+                ChangeSizeArray(ref posts, posts.Length + 1);
 
-                fullname[fullname.Length - 1] = newFullname;
-                post[post.Length - 1] = newPost;
+                fullnames[fullnames.Length - 1] = newFullname;
+                posts[posts.Length - 1] = newPost;
             }
         }
 
-        static void GetAllFiles(string[] fullname, string[] post)
+        static void PrintAllFiles(string[] fullnames, string[] posts)
         {
             Console.Clear();
 
-            if (fullname.Length > 0)
+            if (fullnames.Length > 0)
             {
-                for (int arrayIndex = 0; arrayIndex < fullname.Length; arrayIndex++)
+                for (int arrayIndex = 0; arrayIndex < fullnames.Length; arrayIndex++)
                 {
-                    Console.WriteLine($"{arrayIndex + 1}. {fullname[arrayIndex]} - {post[arrayIndex]}");
+                    Console.WriteLine($"{arrayIndex + 1}. {fullnames[arrayIndex]} - {posts[arrayIndex]}");
                 }
             }
             else
@@ -108,36 +108,40 @@ namespace Homework1_4_1
             }
         }
 
-        static void DeleteFile(ref string[] fullname, ref string[] post)
+        static void DeleteFile(ref string[] fullnames, ref string[] posts)
         {
-            if (fullname.Length > 0)
+            if (fullnames.Length > 0)
             {
                 const string CommandCancel = "Cancel";
-                Console.Clear();
-                Console.Write($"Введите номер досье, который хотите удалить (для отмены команды - {CommandCancel}): ");
-                string command = Console.ReadLine();
+                string command;
 
-                if (command.ToLower() != CommandCancel.ToLower())
+                do
                 {
-                    if (Convert.ToInt32(command) > fullname.Length || Convert.ToInt32(command) <= 0)
-                    {
-                        Console.WriteLine("Введено неверное значение, попробуйте заного.");
-                        Console.ReadKey();
-                        DeleteFile(ref fullname, ref post);
-                    }
-                    else
-                    {
-                        for (int arrayIndex = Convert.ToInt32(command) - 1; arrayIndex < fullname.Length - 1; arrayIndex++)
-                        {
-                            fullname[arrayIndex] = fullname[arrayIndex + 1];
-                            post[arrayIndex] = post[arrayIndex + 1];
-                        }
+                    Console.Clear();
+                    Console.Write($"Введите номер досье, который хотите удалить (для отмены команды - {CommandCancel}): ");
+                    command = Console.ReadLine();
 
-                        ChangeSizeArray(ref fullname, fullname.Length - 1);
-                        ChangeSizeArray(ref post, post.Length - 1);
-                        Console.WriteLine("Досье успешно удалено.");
+                    if (command.ToLower() != CommandCancel.ToLower())
+                    {
+                        if (Convert.ToInt32(command) > fullnames.Length || Convert.ToInt32(command) <= 0)
+                        {
+                            Console.WriteLine("Введено неверное значение, попробуйте заного.");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            for (int arrayIndex = Convert.ToInt32(command) - 1; arrayIndex < fullnames.Length - 1; arrayIndex++)
+                            {
+                                fullnames[arrayIndex] = fullnames[arrayIndex + 1];
+                                posts[arrayIndex] = posts[arrayIndex + 1];
+                            }
+
+                            ChangeSizeArray(ref fullnames, fullnames.Length - 1);
+                            ChangeSizeArray(ref posts, posts.Length - 1);
+                            Console.WriteLine("Досье успешно удалено.");
+                        }
                     }
-                }
+                } while (command.ToLower() != CommandCancel.ToLower() || Convert.ToInt32(command) > fullnames.Length || Convert.ToInt32(command) <= 0);
             }
             else
             {
@@ -145,7 +149,7 @@ namespace Homework1_4_1
             }
         }
 
-        static void SearchToSecondName(string[] fullname, string[] post)
+        static void SearchToSecondName(string[] fullnames, string[] posts)
         {
             Console.Clear();
             Console.Write("Введите фамилию: ");
@@ -153,11 +157,11 @@ namespace Homework1_4_1
             bool haveInformation = false;
             secondName = secondName.Trim();
 
-            for (int arrayIndex = 0; arrayIndex < fullname.Length; arrayIndex++)
+            for (int arrayIndex = 0; arrayIndex < fullnames.Length; arrayIndex++)
             {
-                if (fullname[arrayIndex].Split()[0] == secondName)
+                if (fullnames[arrayIndex].Split()[0] == secondName)
                 {
-                    Console.WriteLine($"{arrayIndex + 1}. {fullname[arrayIndex]} - {post[arrayIndex]}");
+                    Console.WriteLine($"{arrayIndex + 1}. {fullnames[arrayIndex]} - {posts[arrayIndex]}");
                     haveInformation = true;
                 }
             }
