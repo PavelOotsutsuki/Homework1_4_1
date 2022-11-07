@@ -10,7 +10,6 @@ namespace Homework1_4_1
     {
         static void Main(string[] args)
         {
-
             string[] fullnames = new string[0];
             string[] posts = new string[0];
             bool isWork = true;
@@ -83,8 +82,8 @@ namespace Homework1_4_1
                 string newPost = Console.ReadLine();
                 newPost = newPost.Trim();
 
-                ChangeSizeArray(ref fullnames, fullnames.Length + 1);
-                ChangeSizeArray(ref posts, posts.Length + 1);
+                IncreaseSizeArray(ref fullnames, fullnames.Length + 1);
+                IncreaseSizeArray(ref posts, posts.Length + 1);
 
                 fullnames[fullnames.Length - 1] = newFullname;
                 posts[posts.Length - 1] = newPost;
@@ -114,6 +113,7 @@ namespace Homework1_4_1
             {
                 const string CommandCancel = "Cancel";
                 string command;
+                int arrayLength = fullnames.Length;
 
                 do
                 {
@@ -136,12 +136,17 @@ namespace Homework1_4_1
                                 posts[arrayIndex] = posts[arrayIndex + 1];
                             }
 
-                            ChangeSizeArray(ref fullnames, fullnames.Length - 1);
-                            ChangeSizeArray(ref posts, posts.Length - 1);
+                            ReduceSizeArray(ref fullnames, fullnames.Length - 1);
+                            ReduceSizeArray(ref posts, posts.Length - 1);
                             Console.WriteLine("Досье успешно удалено.");
                         }
                     }
-                } while (command.ToLower() != CommandCancel.ToLower() || Convert.ToInt32(command) > fullnames.Length || Convert.ToInt32(command) <= 0);
+                    else
+                    {
+                        break;
+                    }
+
+                } while (Convert.ToInt32(command) > arrayLength || Convert.ToInt32(command) <= 0);
             }
             else
             {
@@ -172,21 +177,23 @@ namespace Homework1_4_1
             }
         }
 
-        static void ChangeSizeArray(ref string [] array, int newSize)
+        static void IncreaseSizeArray (ref string[] array, int newSize)
         {
             string[] arrayCopy = new string[newSize];
-            int minLength;
 
-            if (array.Length >= newSize)
+            for (int arrayIndex = 0; arrayIndex < array.Length; arrayIndex++)
             {
-                minLength = newSize;
-            }
-            else
-            {
-                minLength = array.Length;
+                arrayCopy[arrayIndex] = array[arrayIndex];
             }
 
-            for (int arrayIndex = 0; arrayIndex < minLength; arrayIndex++)
+            array = arrayCopy;
+        }
+
+        static void ReduceSizeArray(ref string[] array, int newSize)
+        {
+            string[] arrayCopy = new string[newSize];
+
+            for (int arrayIndex = 0; arrayIndex < arrayCopy.Length; arrayIndex++)
             {
                 arrayCopy[arrayIndex] = array[arrayIndex];
             }
