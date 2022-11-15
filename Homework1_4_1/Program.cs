@@ -82,11 +82,8 @@ namespace Homework1_4_1
                 string newPost = Console.ReadLine();
                 newPost = newPost.Trim();
 
-                IncreaseSizeArray(ref fullnames, fullnames.Length + 1);
-                IncreaseSizeArray(ref posts, posts.Length + 1);
-
-                fullnames[fullnames.Length - 1] = newFullname;
-                posts[posts.Length - 1] = newPost;
+                IncreaseSizeArray(ref fullnames, fullnames.Length + 1, newFullname);
+                IncreaseSizeArray(ref posts, posts.Length + 1, newPost);
             }
         }
 
@@ -130,14 +127,8 @@ namespace Homework1_4_1
                         }
                         else
                         {
-                            for (int arrayIndex = Convert.ToInt32(command) - 1; arrayIndex < fullnames.Length - 1; arrayIndex++)
-                            {
-                                fullnames[arrayIndex] = fullnames[arrayIndex + 1];
-                                posts[arrayIndex] = posts[arrayIndex + 1];
-                            }
-
-                            ReduceSizeArray(ref fullnames, fullnames.Length - 1);
-                            ReduceSizeArray(ref posts, posts.Length - 1);
+                            ReduceSizeArray(ref fullnames, fullnames.Length - 1, Convert.ToInt32(command) - 1);
+                            ReduceSizeArray(ref posts, posts.Length - 1, Convert.ToInt32(command) - 1);
                             Console.WriteLine("Досье успешно удалено.");
                         }
                     }
@@ -177,7 +168,7 @@ namespace Homework1_4_1
             }
         }
 
-        static void IncreaseSizeArray (ref string[] array, int newSize)
+        static void IncreaseSizeArray (ref string[] array, int newSize, string newElement)
         {
             string[] arrayCopy = new string[newSize];
 
@@ -186,12 +177,18 @@ namespace Homework1_4_1
                 arrayCopy[arrayIndex] = array[arrayIndex];
             }
 
+            arrayCopy[newSize - 1] = newElement;
             array = arrayCopy;
         }
 
-        static void ReduceSizeArray(ref string[] array, int newSize)
+        static void ReduceSizeArray(ref string[] array, int newSize, int deleteIndex)
         {
             string[] arrayCopy = new string[newSize];
+
+            for (int arrayIndex = deleteIndex; arrayIndex < array.Length - 1; arrayIndex++)
+            {
+                array[arrayIndex] = array[arrayIndex + 1];
+            }
 
             for (int arrayIndex = 0; arrayIndex < arrayCopy.Length; arrayIndex++)
             {
