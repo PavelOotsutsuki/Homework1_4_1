@@ -14,55 +14,54 @@ namespace Homework1_4_1
             string[] posts = new string[0];
             bool isWork = true;
 
-            while (isWork)
-            {
-                Console.Clear();
-                PrintMenu(ref fullnames, ref posts, ref isWork);
-            }
-
+            Work(fullnames, posts, isWork);
             Console.Write("Для продолжения нажмите любую кнопку...");
             Console.ReadKey();
         }
 
-        static void PrintMenu(ref string[] fullnames, ref string[] posts, ref bool isWork)
+        static void Work(string[] fullnames,string[] posts,bool isWork)
         {
-            const int CommandAddFile = 1;
-            const int CommandAllFiles = 2;
-            const int CommandDeleteFiles = 3;
-            const int CommandSearchToSecondName = 4;
-            const int CommandExit = 5;
-            Console.WriteLine($"{CommandAddFile}. Добавить досье.");
-            Console.WriteLine($"{CommandAllFiles}. Вывести все досье.");
-            Console.WriteLine($"{CommandDeleteFiles}. Удалить досье.");
-            Console.WriteLine($"{CommandSearchToSecondName}. Поиск по фамилии.");
-            Console.WriteLine($"{CommandExit}. Выход.");
-            Console.WriteLine();
-            Console.Write("Введите команду: ");
-            int command = Convert.ToInt32(Console.ReadLine());
-
-            switch (command)
+            while (isWork)
             {
-                case CommandAddFile:
-                    AddFile(ref fullnames, ref posts);
-                    break;
-                case CommandAllFiles:
-                    PrintAllFiles(fullnames, posts);
-                    break;
-                case CommandDeleteFiles:
-                    DeleteFile(ref fullnames, ref posts);
-                    break;
-                case CommandSearchToSecondName:
-                    SearchToSecondName(fullnames, posts);
-                    break;
-                case CommandExit:
-                    isWork = false;
-                    break;
-                default:
-                    Console.WriteLine("Такой команды нет. Попробуйте заного.");
-                    break;
-            }
+                const int CommandAddFile = 1;
+                const int CommandAllFiles = 2;
+                const int CommandDeleteFiles = 3;
+                const int CommandSearchToSecondName = 4;
+                const int CommandExit = 5;
+                Console.Clear();
+                Console.WriteLine($"{CommandAddFile}. Добавить досье.");
+                Console.WriteLine($"{CommandAllFiles}. Вывести все досье.");
+                Console.WriteLine($"{CommandDeleteFiles}. Удалить досье.");
+                Console.WriteLine($"{CommandSearchToSecondName}. Поиск по фамилии.");
+                Console.WriteLine($"{CommandExit}. Выход.");
+                Console.WriteLine();
+                Console.Write("Введите команду: ");
+                int command = Convert.ToInt32(Console.ReadLine());
 
-            Console.ReadKey();
+                switch (command)
+                {
+                    case CommandAddFile:
+                        AddFile(ref fullnames, ref posts);
+                        break;
+                    case CommandAllFiles:
+                        PrintAllFiles(fullnames, posts);
+                        break;
+                    case CommandDeleteFiles:
+                        DeleteFile(ref fullnames, ref posts);
+                        break;
+                    case CommandSearchToSecondName:
+                        SearchToSecondName(fullnames, posts);
+                        break;
+                    case CommandExit:
+                        isWork = false;
+                        break;
+                    default:
+                        Console.WriteLine("Такой команды нет. Попробуйте заного.");
+                        break;
+                }
+
+                Console.ReadKey();
+            }
         }
 
         static void AddFile(ref string[] fullnames, ref string[] posts)
@@ -132,7 +131,7 @@ namespace Homework1_4_1
                             Console.WriteLine("Досье успешно удалено.");
                         }
                     }
-                } while (Convert.ToInt32(command) > arrayLength || Convert.ToInt32(command) <= 0 || command.ToLower() != CommandCancel.ToLower());
+                } while (Convert.ToInt32(command) > arrayLength || Convert.ToInt32(command) <= 0 && command.ToLower() != CommandCancel.ToLower());
             }
             else
             {
